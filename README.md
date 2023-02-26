@@ -32,5 +32,5 @@ charlotte
 ```
  
 <p align="center">
-  <img src="swole-doge.jpg" width="350" height="100">
+  <img src="swole-doge.jpg" width="150" height="150">
 </p>
