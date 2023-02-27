@@ -34,8 +34,12 @@ class BatchNorm1d:
 
     def __call__(self, x: torch.tensor) -> torch.tensor:
         if self.training:
-            x_mean = x.mean(dim=0, keepdims=True)
-            x_var = x.var(dim=0, keepdims=True)
+            if x.ndim == 2:
+                dim = 0
+            elif x.ndim == 3:
+                dim = (0, 1)
+            x_mean = x.mean(dim=dim, keepdims=True)
+            x_var = x.var(dim=dim, keepdims=True)
         else:
             x_mean = self.running_mean
             x_var = self.running_var
@@ -80,7 +84,11 @@ class FlattenConsecutive:
         self.n = n
 
     def __call__(self, x: torch.tensor) -> torch.tensor:
-        self.out = x.view(x.shape[0], -1)
+        b, t, c = x.shape
+        x = x.view(b, t//self.n, c*self.n)
+        if x.shape[1] == 1:
+            x = x.squeeze(dim=1)
+        self.out = x
         return self.out
 
     def parameters(self):
