@@ -2,15 +2,19 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 torch.manual_seed(1337)
+vocab_len = 65
+n_embed = 32
 
 
 class BLModel(nn.Module):
-    def __init__(self, vocab_len):
+    def __init__(self):
         super().__init__()
-        self.token_embedding_table = nn.Embedding(vocab_len, vocab_len)
+        self.token_embedding_table = nn.Embedding(vocab_len, n_embed)
+        self.lm_head = nn.Linear(n_embed, vocab_len)
 
     def forward(self, x, y=None):
-        logits = self.token_embedding_table(x)
+        token_embeddings = self.token_embedding_table(x)
+        logits = self.lm_head(token_embeddings)
         if y is None:
             loss = None
         else:

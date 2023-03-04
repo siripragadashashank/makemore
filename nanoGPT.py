@@ -83,7 +83,7 @@ if __name__ == '__main__':
     train = data[:n]
     val = data[n:]
 
-    m = BLModel(vocab_len)
+    m = BLModel()
     m = m.to(device)
 
     train_model()
