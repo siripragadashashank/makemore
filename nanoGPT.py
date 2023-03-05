@@ -57,14 +57,14 @@ def decode(indices):
 if __name__ == '__main__':
 
     # hyperparams
-    batch_size = 32
-    block_size = 8
+    batch_size = 64
+    block_size = 256
     max_iters = 5000
     eval_interval = 500
-    learning_rate = 1e-3
+    learning_rate = 3e-4
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     eval_iters = 200
-    n_embed = 32
+    n_embed = 384
     # -----------------
 
     torch.manual_seed(1337)
@@ -83,7 +83,7 @@ if __name__ == '__main__':
     train = data[:n]
     val = data[n:]
 
-    m = BLModel()
+    m = BLModel(vocab_len, n_embed, block_size, n_head=4, n_layer=4)
     m = m.to(device)
 
     train_model()
